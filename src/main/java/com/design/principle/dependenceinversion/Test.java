@@ -46,10 +46,13 @@ public class Test {
      * @Param [args]
      * @return void
      **/
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Geely geely = new Geely(new JavaCourse());
         geely.studyImoocCourse();
 
-    }
+    }*/
+
+
+
 
 }
