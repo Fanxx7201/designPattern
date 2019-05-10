@@ -33,7 +33,8 @@ public class Test {
     public static void main(String[] args) {
         //用正方形代替了长方形后, 结果和长方形的结果不一样. 这就不符合里式替换原则. 可以用子类代替父类.
         Square square = new Square();
-        square.setLength(10);
-        resize(square);
+        //正方形不适用resize方法, 因为正方形和长方形没有继承的关系.
+/*        square.setLength(10);
+        resize(square);*/
     }
 }

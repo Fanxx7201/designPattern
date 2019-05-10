@@ -8,20 +8,23 @@ package com.design.principle.liskovSubstitution;
  * @CreateDate: 2019/5/5 15:19
  * <p>Copyright: Copyright (c) 2019</p>
  */
-public class Rectangle {
+public class Rectangle implements Quadrangle{
     private long length;
     private long width;
 
+
+    @Override
+    public long getWidth() {
+        return width;
+    }
+
+    @Override
     public long getLength() {
         return length;
     }
 
     public void setLength(long length) {
         this.length = length;
-    }
-
-    public long getWidth() {
-        return width;
     }
 
     public void setWidth(long width) {

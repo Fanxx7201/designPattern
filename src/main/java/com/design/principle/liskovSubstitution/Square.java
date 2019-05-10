@@ -8,7 +8,7 @@ package com.design.principle.liskovSubstitution;
  * @CreateDate: 2019/5/5 15:22
  * <p>Copyright: Copyright (c) 2019</p>
  */
-public class Square extends Rectangle {
+public class Square implements Quadrangle {
     private long sideLength;
 
     public long getSideLength() {
@@ -19,23 +19,14 @@ public class Square extends Rectangle {
         this.sideLength = sideLength;
     }
 
-    @Override
-    public long getLength() {
-        return getSideLength();
-    }
-
-    @Override
-    public void setLength(long length) {
-        setSideLength(length);
-    }
 
     @Override
     public long getWidth() {
-        return getSideLength();
+        return sideLength;
     }
 
     @Override
-    public void setWidth(long width) {
-        setSideLength(width);
+    public long getLength() {
+        return sideLength;
     }
 }
