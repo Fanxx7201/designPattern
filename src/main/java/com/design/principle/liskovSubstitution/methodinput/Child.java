@@ -12,10 +12,10 @@ import java.util.Map;
  * <p>Copyright: Copyright (c) 2019</p>
  */
 public class Child extends Base{
-    @Override
+/*    @Override
     public void method(HashMap map) {
         System.out.println("子类HashMap入参方法被执行....");
-    }
+    }*/
 
     public void method(Map map) {
         System.out.println("子类Map入参方法被执行....");
