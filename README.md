@@ -127,3 +127,5 @@
 * 类的个数容易过多, 增加复杂度
 * 增加了系统的抽象性和理解难度
 ### 工厂方法-coding
+* coding: com.design.pattern.creational.factorymethod
+* VideoFactory是抽象类, 他的子类, 规定产生哪一种类的视频. 应用层使用的时候只是创建子类的工厂. 其他的过程是不管的. 拓展的时候, 直接创建子类工厂就行.
