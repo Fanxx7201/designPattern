@@ -13,12 +13,17 @@ public class Test {
         //父类声明的引用, 指向子类的实现.
         /*Video video = new JavaVideo();
         video.produce();*/
-        VideoFactory videoFactory = new VideoFactory();
+        /*VideoFactory videoFactory = new VideoFactory();
         Video video = videoFactory.getVideo("java");
         if(video == null){
             return;
         }
+        video.produce();*/
+        VideoFactory videoFactory = new VideoFactory();
+        Video video = videoFactory.getVideo(JavaVideo.class);
+        if(video == null){
+            return;
+        }
         video.produce();
-
     }
 }

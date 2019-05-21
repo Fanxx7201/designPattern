@@ -18,8 +18,13 @@ public class VideoFactory {
             return null;
     }*/
 
-    //反射实现
-    /*public Video getVideo(Class c){
+    /**
+     * @Description  反射, 保证拓展性. 如果新加了课程, 传类进来就行, 不用修改工厂类的代码.
+     * @Date  2019/5/21
+     * @Param [c]
+     * @return com.design.pattern.creational.simplefactory.Video
+     **/
+    public Video getVideo(Class c){
         Video video = null;
         try {
             video = (Video)Class.forName(c.getName()).newInstance();
@@ -30,5 +35,6 @@ public class VideoFactory {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }*/
+        return video;
+    }
 }
