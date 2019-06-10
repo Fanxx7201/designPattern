@@ -225,3 +225,9 @@
 * 单例模式和工厂模式
 * 单例模式和享元模式
 ### 单例-coding
+* 懒汉式coding: LazySingleton + T
+* DoubleCheck双重检查: LazyDoubleCheckSingleton
+* 单例设计模式-静态内部类-基于类初始化的延迟加载解决方案以及原理解析: StaticInnerClassSingleton(再看一下这里.......)
+> JVM在类的初始化阶段(class被加载后, 类被线程使用之前), 在类的初始化中间, JVM会去加载一个锁. 这个锁可以同步多个线程对一个类的初始化.
+> 线程0是构造线程, 线程1是看不见2,3的重排序的.
+### 单例-饿汉式
