@@ -18,10 +18,31 @@ public class LazySingleton {
     //声明静态的对象,初始化的时候没有创建. 而是做延迟加载.
     private static LazySingleton lazySingleton = null;
 
-    public static LazySingleton getInstance(){
+    /**
+     * @Description  加同步锁可以保证线程安全.
+     * 静态方法加锁, 锁的是这个class的静态文件.
+     * 如果不是静态方法加锁, 锁的是堆内存中生成的对象.
+     * @Date  2019/6/10
+     * @Param []
+     * @return com.design.pattern.creational.singleton.LazySingleton
+     **/
+    public synchronized static LazySingleton getInstance(){
         if(lazySingleton == null){
             lazySingleton = new LazySingleton();
         }
         return lazySingleton;
     }
+
+    //以下这种方法, 相当于静态方法加锁
+    //问题: 同步锁比较消耗资源. 锁的是class的话范围很大, 对性能有影响
+    /*
+    public static LazySingleton getInstance(){
+        synchronized (LazySingleton.class){
+            if(lazySingleton == null){
+                lazySingleton = new LazySingleton();
+            }
+        }
+        return lazySingleton;
+    }
+    */
 }
