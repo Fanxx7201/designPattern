@@ -79,7 +79,7 @@
 #### 容量单位
 * 在物理层面上, 只认识高低电平. 高电平表示1, 低电平表示0. 0和1表示的是比特位(bit).
 * 字节: 1Byte = 8bits
-[Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%AE%B9%E9%87%8F%E5%8D%95%E4%BD%8D.png)
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%AE%B9%E9%87%8F%E5%8D%95%E4%BD%8D.png)
 * 为什么500G硬盘格式化后, 为465G? 硬盘商一般用10进位标记容量.
 #### 速度单位
 * 网络速度
@@ -92,10 +92,10 @@
 #### 字符编码集的历史
 * ASCII码
 1. 7个bit可以完全表示ASCII码, 包含95个可打印字符, 33个不可打印字符(包括控制字符), 也就是2^7个字符.
-2. [Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/ASCII%E7%A0%81%E8%A1%A8.png)
+2. ![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/ASCII%E7%A0%81%E8%A1%A8.png)
 * Extended ASCII 码
 1. 从7个bits拓展到8个
-2. [Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/Extended%20ASCII%20%E7%A0%81.png)
+2. ![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/Extended%20ASCII%20%E7%A0%81.png)
 * 字符编码集的国际化
 1. 欧洲, 中亚等国家语言多样, 语言体系不一样, 很多国家不是有限字符组合的语言.
 #### 中文编码集
@@ -105,7 +105,7 @@
 4. 编程: UTF-8编码. WINDOWS: 系统默认GBK
 
 ## 计算机组成原理- 组成
-[Image text](计算机组成章概览)
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%AB%A0%E6%A6%82%E8%A7%88.png)
 ### 计算机的总线
 #### 总线的概述
 * USB = Universal Serial Bus 通用串行总线
@@ -117,7 +117,7 @@
 #### 总线的分类
 * 片内总线: 芯片内部总线, 连接寄存器和寄存器之间, 也可以连接寄存器与控制器、运算器之间. --> 高集成度芯片内部的信息传输线
 * 系统总线: 连接系统内外部的总线. 系统总线包括以下几部分
-[Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BA%BF.png)
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BA%BF.png)
 1. 数据总线
 > 总线位数一般和CPU位数相同(32位、64位), 总线的位数是数据总线的重要参数
 > 双向传输各个部件的数据信息
@@ -132,13 +132,13 @@
 * 为什么需要总线仲裁? 假设主存要和IO设备交换数据, 硬盘和IO设备都就绪了, 那么谁先使用总线呢? 就需要仲裁器的仲裁.(解决总线使用权冲突的问题)
 * 总线仲裁的方法? 
 1. 链式查询
-[Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E9%93%BE%E5%BC%8F%E6%9F%A5%E8%AF%A2.png)
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E9%93%BE%E5%BC%8F%E6%9F%A5%E8%AF%A2.png)
 > 好处是电路复杂度低, 仲裁方式简单
 > 坏处是优先级低的设备难以获得总线使用权, 对电路故障敏感
 2. 计时器定时查询: 仲裁控制器对设备编号, 使用计数器累计计数. 接收到仲裁信号后, 往所有设备发出计数值. 计数值与设备编号一致则获得总线使用权.
-[Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E8%AE%A1%E6%97%B6%E5%99%A8%E5%AE%9A%E6%97%B6%E6%9F%A5%E8%AF%A2.png)
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E8%AE%A1%E6%97%B6%E5%99%A8%E5%AE%9A%E6%97%B6%E6%9F%A5%E8%AF%A2.png)
 3. 独立请求: 每个设备均有总线独立连接仲裁器. 设备可以独立向仲裁器发送请求, 接收请求. 当同时收到多个请求信号, 仲裁器有权按优先级分配使用权.
-[Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E7%8B%AC%E7%AB%8B%E8%AF%B7%E6%B1%82.png)
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E7%8B%AC%E7%AB%8B%E8%AF%B7%E6%B1%82.png)
 > 好处: 响应速度快, 优先顺序可以动态改变
 > 坏处: 设备连线多, 总线控制复杂
 
