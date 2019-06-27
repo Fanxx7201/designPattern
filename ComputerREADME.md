@@ -92,10 +92,10 @@
 #### 字符编码集的历史
 * ASCII码
 1. 7个bit可以完全表示ASCII码, 包含95个可打印字符, 33个不可打印字符(包括控制字符), 也就是2^7个字符.
-2. ![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/ASCII%E7%A0%81%E8%A1%A8.png)
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/ASCII%E7%A0%81%E8%A1%A8.png)
 * Extended ASCII 码
 1. 从7个bits拓展到8个
-2. ![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/Extended%20ASCII%20%E7%A0%81.png)
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/Extended%20ASCII%20%E7%A0%81.png)
 * 字符编码集的国际化
 1. 欧洲, 中亚等国家语言多样, 语言体系不一样, 很多国家不是有限字符组合的语言.
 #### 中文编码集
