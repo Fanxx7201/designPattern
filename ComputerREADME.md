@@ -14,7 +14,10 @@
 * [计算机的字符与编码集](#计算机的字符与编码集)
 * [计算机的总线](#计算机的总线)
 * [计算机的输入输出设备](#计算机的输入输出设备)
-
+* [计算机的存储器概览](#计算机的存储器概览)
+* [计算机的主存储器与辅助存储器](#计算机的主存储器与辅助存储器)
+* [计算机的高速缓存](#计算机的高速缓存)
+* [计算机的指令系统](#计算机的指令系统)
 
 
 
@@ -150,8 +153,107 @@
 
 * 状态线: I/O设备状态向主机报告的信号线, 查询设备是否已经正常连接并就绪, 可以查询设备是否已经被占用
 
-* 命令线
+* 命令线: CPU向设备发送命令的信号线(CPU读取磁盘某个区域的数据), 可以发送读写信号和启动停止信号(主机发送信号, 让光驱启动或者停止).
 
-* 设备选择线
+* 设备选择线: 主机选择I/O设备进行操作的信号线, 对连在总线上的设备进行选择(USB总线连接了3个u盘, 通过设备选择线进行选择要连接的u盘).
 
 #### CPU与IO设备的通信
+* 前提: CPU的速度和IO设备的速度不一致, CPU速度可能是IO设备的十倍百倍.
+
+* 程序中断方法: IO设备就绪时, 给CPU发送中断信号, CPU有专门的电路响应中断信号.
+> 某一个时刻, CPU发送信号, 启动打印机, 打印机准备完成时, 向CPU发送中断信号, CPU响应信号(可能延时), 这时CPU发送数据.  
+> 缺点是频繁地打断CPU  
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E7%A8%8B%E5%BA%8F%E4%B8%AD%E6%96%AD.png)
+* DMA(直接存储器访问): DMA直接连接主存与IO设备, DMA工作时不需要CPU的参与. 硬盘和显卡都有DMA设备
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/DMA.png)
+
+### 计算机的存储器概率
+####存储器的分类
+* 按介质分类
+1. 半导体存储器: 内存, u盘, 固态硬盘
+2. 磁存储器: 磁带, 磁盘
+* 按照存取方式
+1. 随机存储器(RAM), 可以随机读取, 和位置无关
+2. 串行存储器: 与位置有关, 按顺序查找
+3. 只读存储器(ROM), 只读不写.
+####存储器的层次结构
+* 读写速度: 5400转, 7200转
+* 存储容量: 2t, 4g
+* 价格
+* 容量 + 价格 => 位价: 每比特位价格
+----
+* 存储器的层次结构
+1. 缓存:速度快, 位价高
+2. 主存: 速度适中, 位价适中
+3. 辅存: 速度慢, 位价低  
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%AD%98%E5%82%A8%E5%99%A8%E7%9A%84%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.png)
+* 缓存-主存层次: 是利用了局部性原理. 实现: 在CPU和主存之间增加了一层速度快(容量小)的cache, 目的是解决主存[速度]不足的问题   
+> 什么是局部性原理? 局部性原理是CPU访问存储器时, 无论是存取指令还是存取数据, 所访问的存储单元都趋于聚集在一个较小的连续区域中.  
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86.png)
+* 主存-辅存层次: 是利用局部性原理. 实现: 主存之外增加辅助存储器(磁盘, SD卡, U盘等), 目的是解决主存[容量]不足问题.
+### 计算机的主存储器与辅助存储器
+#### 主存储器 - 内存
+* RAM(随机存取存储器), 通过电容来存储数据, 必须隔一段时间刷新一次, 断电的话一段时间后将丢失所有数据.   
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E4%B8%BB%E5%AD%98%E5%82%A8%E5%99%A8-%E5%86%85%E5%AD%98.png)
+* 32位系统, 支持2^32 = 4GB内存. 64位系统, 支持2 ^ 64 = 2 ^34 GB  
+#### 辅助存储器 - 磁盘
+* 算法
+1. 先来先服务算法
+2. 最短寻道时间算法
+3. 扫描算法
+4. 循环扫描算法
+### 计算机的高速缓存
+#### 高速缓存的工作原理
+* 内存中的两个概念
+1. 字: 存放在一个存储单元中的二进制代码组合.可以表示一个数据, 一个指令或者是一个字符串, 是最小的单位  
+2. 字块: 存储在连续的存储单元中被看做是一个单元的一组字.  
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%AD%97%E4%B8%8E%E5%AD%97%E5%9D%97%E7%9A%84%E8%BF%90%E7%AE%97.png)
+> 字的地址包含两个部分, 前m位指定字块地址, 后b位指定字在字块中的地址  
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%AD%97%E7%9A%84%E8%AE%A1%E7%AE%97.png)
+
+* 缓存和主存的关系
+1. 存储的逻辑结构相似
+2. 缓存容量小
+3. 缓存速度快
+* CPU与缓存, 主存的关系
+1. CPU需要的数据在缓存中, 会去缓存中去拿
+2. 不在的话去主存中拿
+* 高速缓存的工作原理  
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.png)
+* 计算得知, 为了提高CPU执行效率, 需要将缓存中的数据替换为CPU需要的数据
+#### 高速缓存的替换策略
+* 替换时机: 缓存中没有数据时, 就需要从主存中载入所需的数据.
+* 替换策略
+1. 随机算法
+2. 先进先出算法(FIFO)
+> 将缓存看做一个先进先出的队列, 优先替换掉最先进去队列的字块  
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%85%88%E8%BF%9B%E5%85%88%E5%87%BA%E7%AE%97%E6%B3%95.png)
+3. 最不经常使用算法(LFU)
+> 优先淘汰最不经常使用的字块, 这需要额外的空间记录字块的使用频率
+4. 最近最少使用算法(LRU)
+> 优先淘汰一段时间内没有使用的字块, 有多种实现方法, 一般使用双向链表. 把当前访问的节点置于链表前面, 保证链表的头节点是最近使用的. 淘汰尾部.
+### 计算机的指令系统
+#### 机器指令的形式
+* 由两部分组成: 操作码, 地址码
+> 操作码: 指明指令要完成的操作, 操作码的位数反映了机器的操作种类, 如果有8位操作码, 那就有2 ^ 8 = 256种操作.  
+> 地址码: 直接给出操作数或者是操作数的地址, 分三地址指令, 二地址指令, 和一地址指令  
+1. 三地址指令, 有三个地址, 操作码OP, 如果是加法操作的话, 就是地址1 + 地址2 = 地址3   
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E4%B8%89%E5%9C%B0%E5%9D%80%E6%8C%87%E4%BB%A4.png)
+2. 二地址指令  
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E4%BA%8C%E5%9C%B0%E5%9D%80%E6%8C%87%E4%BB%A4.png)
+3. 一地址指令一种是对自己操作, 另外一种比如说是自增操作, 不需要其他地址参与的  
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E4%B8%80%E5%9C%B0%E5%9D%80%E6%8C%87%E4%BB%A4.png)
+4. 零地址指令: 机器指令中无地址码, 空操作, 停机操作, 中断返回操作等等.
+#### 机器指令的操作类型
+#### 机器指令的寻址方式
+
+
+
+
+
+
+
+
+
+
+
