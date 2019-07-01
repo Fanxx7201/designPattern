@@ -16,7 +16,10 @@ public class HungrySingleton implements Serializable {
     private final static HungrySingleton hungrySingleton = new HungrySingleton();
 
     private HungrySingleton(){
-
+        //对于类加载的时候, 实例就已经创建好了这样的类时有效的.
+        if(hungrySingleton != null){
+            System.out.println("单例构造器禁止反射");
+        }
     }
 
     public static HungrySingleton getInstance(){
