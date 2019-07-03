@@ -29,6 +29,14 @@
 * [进程管理之五状态模型](#进程管理之五状态模型)
 * [进程管理之进程同步](#进程管理之进程同步)
 * [Linux的进程管理](#Linux的进程管理)
+* [作业管理之进程调度](#作业管理之进程调度)
+* [作业管理之死锁](#作业管理之死锁)
+* [存储管理之内存分配与回收](#存储管理之内存分配与回收)
+* [存储管理之段页式存储管理](#存储管理之段页式存储管理)
+* [存储管理之虚拟内存](#存储管理之虚拟内存)
+
+
+
 
 
 ## 计算机组成原理- 概述
@@ -461,6 +469,122 @@
 * kill命令
 > kill -9 : 停掉当前线程  
 > kill -l : 查看操作系统支持的信号  
+
+### 作业管理之进程调度
+#### 进程调度的概述
+* 进程调度是指计算机通过决策决定哪个就绪进程可以获得CPU的使用权 -> 前提是多道程序设计
+1. 保留旧进程的运行信息, 请出旧进程(收拾包袱)
+2. 选择新进程, 准备运行环境并分配CPU(进程新进驻)
+* 进程调度的机制
+1. 就绪队列的排队机制
+> 将就绪进程按照一定的方式排成队列, 以便调度程序可以最快的找到就绪进程  
+2. 选择运行进程的委派机制
+> 调度程序以一定的策略选择就绪进程, 将CPU资源分配给它  
+3. 新老进程的上下文切换机制
+> 将老进程的上下文保存在内存当中, 当前的CPU中装入新进程的上下文.  
+* 思考问题: 老进程没有执行完怎么办?
+> 调度分为两种, 一种是非抢占式调度, 一种是抢占式的调度.  
+>> 非抢占式调度是处理器一旦分配给应用了,应用就一直运行下去. 工作完成或者io阻塞才让出处理器.(专用系统, 不公平)  
+>> 抢占式调度是以一定的策略暂停当前运行的进程, 保存旧进程的上下文信息, 分配给新进程.(通用系统应用, 公平)  
+#### 进程调度的算法
+* 先来先服务调度算法
+* 短进程优先调度算法
+> 优先选择就绪队列中估计运行时间最短的进程. 不利于长作业进程  
+* 高优先权优先调度算法
+> 进程附带优先权. 比如前台进程优先于后台进程  
+* 时间片轮转调度算法
+> 按照先来先服务, 排序好就绪进程  
+> 每次从队列头部取出待执行的进程, 分配一个时间片, 如果时间片用完了, 就给这个进程放在队列的尾部  
+> 相对公平, 不能及时响应用户的操作  
+
+### 作业管理之死锁
+* 概念: 两个或者两个以上的进程, 在执行过程中, 由于竞争资源或者由于彼此通信而造成一种阻塞现象, 若无外力作用, 他们都无法推进.
+#### 死锁的产生
+* 原因1: 竞争资源
+1. 共享资源数量不满足各个进程需求
+2. 各个进程之间发生资源竞争导致死锁
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E7%AB%9E%E4%BA%89%E8%B5%84%E6%BA%90%E6%AD%BB%E9%94%81%E4%B8%BE%E4%BE%8B.png)
+* 原因2: 进程调度顺序不当
+如果按照ABCD的顺序, 就会产生死锁. 如果让进程1完成自己的任务, 然后进程2再来执行, 就不会产生死锁的问题.
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%A1%BA%E5%BA%8F%E4%B8%8D%E5%BD%93%E4%B8%BE%E4%BE%8B.png)
+* 死锁的四个必要条件
+1. 互斥条件
+> 进程对资源的使用是排他的, 某个资源只能又一个进程使用, 其他进程需要的话只能等待  
+2. 请求保持条件
+> 进程至少保持一个资源, 又提出新的资源请求. 新资源被占用 , 请求被阻塞. 被阻塞的进程不释放自己的资源.  
+3. 不可剥夺条件
+> 进程获得的资源在未完全使用前, 不能被剥夺. 获得的资源只能由进程自身释放
+4. 环路等待条件
+> 发生死锁时, 必然存在进程 - 资源环形链
+#### 死锁的处理
+* 预防死锁的方法
+1. 摒弃请求保持条件
+> 系统规定进程运行之前, 一次性申请所有需要的资源
+2. 摒弃不可剥夺条件
+> 进程需要新的请求条件不能满足的时候, 可以剥夺他之前拥有的资源
+3. 摒弃环路等待条件
+> 可用资源线性排序, 申请必须按照需要递增申请. 
+* 银行家算法
+1. 客户申请的贷款是有限的, 每次申请需声明最大资金量, 银行家如果能够满足贷款, 都应该给用户贷款. 客户使用完贷款, 能够及时归还.如图所示, 只有p2可以满足, 所以只贷款给p2
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95.png)
+### 存储管理之内存分配与回收
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86%E7%9A%84%E5%BF%85%E8%A6%81%E6%80%A7.png)
+* 内存分配的过程
+1. 单一连续分配(过时)
+> 最简单的内存分配方式. 只能在单用户, 单进程的操作系统中使用
+2. 固定分区分配(支持多道程序的最简单存储分配方式)
+> 内存被划分为若干个固定大小的区域
+> 每个分区只提供给一个程序使用, 互不干扰
+3. 动态分区分配(根据进程实际需要, 动态分配内存空间.)
+> 标记1: 这个分区被使用. 标记0: 这个分区未被使用  
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%8A%A8%E6%80%81%E5%88%86%E5%8C%BA%E7%A9%BA%E9%97%B2%E8%A1%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png)
+> 双向链表, 比如空闲2和3是连续的, 所以可以给他们放入一个节点.
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%8A%A8%E6%80%81%E5%88%86%E5%8C%BA%E7%A9%BA%E9%97%B2%E9%93%BE%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png)
+> 动态分区分配算法
+>> 首次使用算法(FF算法)  
+>>> 从开始顺序查找适合内存区, 若没有适合的空闲区, 该次分配失败.这样的问题是每次从头部开始, 头部地址空间不断被划分. 所以使用循环使用算法, 每次从上次结束的位置开始.
+----
+>> 最佳适应算法(BF算法)
+>>> 要求空闲区链表按照容量大小排序, 遍历空闲区链表找到最佳合适空闲区.  
+>>> 从小到大遍历空闲链表, 所以找到的空闲区, 肯定是大小最合适的.
+----
+>> 快速适应算法(QF算法)
+>>> 要求有多个空闲区链表, 每个空闲区链表存储一种容量的空闲区
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%BF%AB%E9%80%9F%E9%80%82%E5%BA%94%E7%AE%97%E6%B3%95.png)
+* 内存回收的过程: 有4种情况.
+1. 
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%9B%9E%E6%94%B6%E7%AC%AC1%E7%A7%8D%E6%83%85%E5%86%B5.png)
+2.
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%9B%9E%E6%94%B6%E7%AC%AC2%E7%A7%8D%E6%83%85%E5%86%B5.png)
+3.
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%9B%9E%E6%94%B6%E7%AC%AC3%E7%A7%8D%E6%83%85%E5%86%B5.png)
+4.
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E5%9B%9E%E6%94%B6%E7%AC%AC4%E7%A7%8D%E6%83%85%E5%86%B5.png)
+
+### 存储管理之段页式存储管理
+* 操作系统是如何管理进程的空间?
+#### 页式存储管理
+* 字块是相对于物理设备的定义, 页面是相对逻辑空间的定义.
+* 将进程的逻辑空间, 等分为若干大小一致的页面. 相应的把物理内存空间, 分成与页面大小一致的物理块. 以页面为单位把进程空间装进物理内存中分散的物理块中.
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E9%A1%B5%E5%BC%8F%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86%E7%9A%84%E9%97%AE%E9%A2%98.png)
+* 页表的概念
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E9%A1%B5%E8%A1%A8.png)
+#### 段式存储管理
+* 将进程逻辑空间划分为若干段(非等分)
+* 段的长度由连续逻辑的长度决定. 主函数main, 子程序段X, 子函数y等
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E6%AE%B5%E8%A1%A8.png)
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94.png)
+#### 段页式存储管理
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E6%AE%B5%E9%A1%B5%E5%BC%8F%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86.png)
+![Image text](https://github.com/Fanxx7201/designPattern/blob/master/src/main/resources/pics/%E6%80%BB%E7%BB%93.png)
+
+### 存储管理之虚拟内存
+
+
+
+
+
+
 
 
 
