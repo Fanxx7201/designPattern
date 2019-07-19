@@ -28,7 +28,5 @@ public class Test2 {
         System.out.println(instance == newInstance);
 
 
-        List<String> list = new ArrayList<>();
-
     }
 }
